@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>ソウル旅行スポットマップ</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='38' r='30' fill='%23CD2E3A'/><path d='M50 95 L26 55 h48 z' fill='%23CD2E3A'/><circle cx='50' cy='38' r='13' fill='%23FAF6EF'/></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@500;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
+<style>
+:root {
+  --paper: #FAF6EF;
+  --card: #FFFFFF;
+  --ink: #22252A;
+  --sub: #6D675C;
+  --line: #E9E1D2;
+  --kr-red: #CD2E3A;
+  --kr-blue: #0047A0;
+  --c-meal: #D9480F;
+  --c-shop: #1864AB;
+  --c-cafe: #8D5B34;
+  --c-spot: #2B8A3E;
+  --c-stay: #212529;
+  --disp: "Zen Maru Gothic", "Hiragino Maru Gothic ProN", sans-serif;
+  --body: "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Noto Sans JP", "Yu Gothic", sans-serif;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  font-family: var(--body);
+  background: var(--paper);
+  color: var(--ink);
+  line-height: 1.6;
+}
+
+/* ---------- ヘッダー ---------- */
+header {
+  padding: 14px 16px 0;
+  background: var(--paper);
+}
+.brand { display: flex; align-items: center; gap: 10px; }
+.taegeuk {
+  width: 26px; height: 26px; border-radius: 50%; flex: none;
+  background: linear-gradient(to bottom, var(--kr-red) 50%, var(--kr-blue) 50%);
+  position: relative;
+}
+.taegeuk::before, .taegeuk::after {
+  content: ""; position: absolute; width: 13px; height: 13px; border-radius: 50%; top: 6.5px;
+}
+.taegeuk::before { left: 0; background: var(--kr-red); }
+.taegeuk::after { right: 0; background: var(--kr-blue); }
+h1 {
+  font-family: var(--disp); font-weight: 900; font-size: 20px; letter-spacing: 0.02em;
+}
+.brand small {
+  display: block; font-family: var(--body); font-weight: 400; font-size: 11px;
+  color: var(--sub); letter-spacing: 0.06em;
+}
+
+/* ---------- エリアタブ ---------- */
+nav {
+  position: sticky; top: 0; z-index: 1100;
+  background: var(--paper);
+  padding: 10px 12px;
+  display: flex; gap: 6px;
+  border-bottom: 1px solid var(--line);
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.tab {
+  font-family: var(--disp); font-weight: 700; font-size: 14px;
+  padding: 7px 14px; border-radius: 999px; border: 1.5px solid var(--line);
+  background: var(--card); color: var(--ink); cursor: pointer; white-space: nowrap;
+  transition: background .15s, color .15s, border-color .15s;
+}
+.tab[aria-selected="true"] { background: var(--ink); border-color: var(--ink); color: var(--paper); }
+.tab:focus-visible { outline: 3px solid var(--kr-blue); outline-offset: 2px; }
+
+/* ---------- レイアウト ---------- */
+.wrap { display: flex; flex-direction: column; }
+#map {
+  height: 52vh; min-height: 300px;
+  border-bottom: 1px solid var(--line);
+  background: #E8E4DA;
+}
+.list { padding: 14px 12px 40px; display: flex; flex-direction: column; gap: 10px; }
+
+@media (min-width: 900px) {
+  .wrap { flex-direction: row; height: calc(100dvh - 110px); }
+  #map { flex: 1.2; height: auto; border-bottom: none; border-right: 1px solid var(--line); }
+  .list { flex: 1; overflow-y: auto; max-width: 560px; padding: 16px; }
+}
+
+/* ---------- カード ---------- */
+.card {
+  display: grid; grid-template-columns: 40px 1fr; gap: 12px;
+  background: var(--card); border: 1px solid var(--line); border-radius: 14px;
+  padding: 12px 14px; cursor: pointer; text-align: left; width: 100%;
+  font: inherit; color: inherit;
+  transition: border-color .15s, box-shadow .15s;
+}
+.card:focus-visible { outline: 3px solid var(--kr-blue); outline-offset: 2px; }
+.card.active { border-color: var(--ink); box-shadow: 0 2px 10px rgba(34,37,42,.12); }
+.disc {
+  width: 34px; height: 34px; border-radius: 50%;
+  font-family: var(--disp); font-weight: 700; font-size: 16px;
+  color: #fff; display: flex; align-items: center; justify-content: center;
+  margin-top: 2px;
+  box-shadow: inset 0 -2px 0 rgba(0,0,0,.18);
+}
+.card h2 { font-family: var(--disp); font-weight: 700; font-size: 16px; line-height: 1.4; }
+.chips { display: flex; flex-wrap: wrap; gap: 5px; margin: 4px 0 2px; }
+.chip {
+  font-size: 11px; font-weight: 600; padding: 1.5px 9px; border-radius: 999px;
+  border: 1px solid currentColor; background: transparent;
+}
+.chip.meal-slot { color: #fff; border: none; background: var(--kr-red); }
+.hours { font-size: 12.5px; color: var(--sub); margin-top: 2px; }
+.memo { font-size: 13px; margin-top: 4px; }
+.memo.warn { color: var(--c-meal); font-weight: 600; }
+.addr { font-size: 11.5px; color: var(--sub); margin-top: 4px; }
+.links { margin-top: 8px; }
+.gmap {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-size: 12.5px; font-weight: 600; text-decoration: none;
+  color: var(--kr-blue); border: 1.5px solid var(--kr-blue); border-radius: 999px;
+  padding: 4px 12px;
+}
+.gmap:focus-visible { outline: 3px solid var(--kr-blue); outline-offset: 2px; }
+
+/* ---------- 凡例 ---------- */
+.legend {
+  display: flex; flex-wrap: wrap; gap: 4px 12px;
+  padding: 8px 16px; font-size: 11.5px; color: var(--sub);
+}
+.legend span { display: inline-flex; align-items: center; gap: 5px; }
+.dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
+
+/* ---------- 地図ピン ---------- */
+.pin { background: none; border: none; }
+.pin-inner {
+  width: 30px; height: 30px; border-radius: 50% 50% 50% 4px;
+  transform: rotate(-45deg);
+  display: flex; align-items: center; justify-content: center;
+  border: 2.5px solid #fff;
+  box-shadow: 0 2px 6px rgba(0,0,0,.35);
+}
+.pin-inner b {
+  transform: rotate(45deg);
+  font-family: var(--disp); font-weight: 700; font-size: 14px; color: #fff;
+  font-style: normal;
+}
+.leaflet-popup-content-wrapper { border-radius: 12px; font-family: var(--body); }
+.leaflet-popup-content { margin: 10px 14px; line-height: 1.5; }
+.popup-name { font-family: var(--disp); font-weight: 700; font-size: 14px; }
+.popup-hours { font-size: 12px; color: var(--sub); }
+.popup-link { font-size: 12px; font-weight: 600; color: var(--kr-blue); }
+
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; }
+}
+</style>
+</head>
+<body>
+<header>
+  <div class="brand">
+    <div class="taegeuk" aria-hidden="true"></div>
+    <h1>ソウル旅行スポットマップ<small>明洞・聖水・COEX&amp;カンナム|全23スポット</small></h1>
+  </div>
+</header>
+
+<nav role="tablist" aria-label="エリア切り替え" id="tabs"></nav>
+
+<div class="wrap">
+  <div id="map" role="region" aria-label="地図"></div>
+  <div>
+    <div class="legend" id="legend"></div>
+    <div class="list" id="list"></div>
+  </div>
+</div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+<script>
+const SPOTS = __DATA__;
+
+const AREAS = [
+  { key: "明洞", label: "明洞" },
+  { key: "聖水", label: "聖水" },
+  { key: "江南", label: "COEX&カンナム" },
+  { key: "all", label: "全体" },
+];
+
+const CAT = {
+  "宿":     { color: "var(--c-stay)", hex: "#212529" },
+  "買い物": { color: "var(--c-shop)", hex: "#1864AB" },
+  "食事":   { color: "var(--c-meal)", hex: "#D9480F" },
+  "カフェ": { color: "var(--c-cafe)", hex: "#8D5B34" },
+  "スポット": { color: "var(--c-spot)", hex: "#2B8A3E" },
+};
+
+const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+const map = L.map("map", { zoomControl: true });
+L.tileLayer("https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png", {
+  attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>',
+  maxZoom: 20,
+}).addTo(map);
+
+let markers = {};
+let currentArea = "明洞";
+
+function gmapUrl(s) {
+  return `https://www.google.com/maps/search/?api=1&query=${s.lat}%2C${s.lng}`;
+}
+
+function pinIcon(s) {
+  return L.divIcon({
+    className: "pin",
+    html: `<div class="pin-inner" style="background:${CAT[s.category].hex}"><b>${s.no}</b></div>`,
+    iconSize: [30, 30],
+    iconAnchor: [4, 28],
+    popupAnchor: [11, -28],
+  });
+}
+
+function spotsFor(area) {
+  return area === "all" ? SPOTS : SPOTS.filter(s => s.area === area);
+}
+
+function renderTabs() {
+  const nav = document.getElementById("tabs");
+  nav.innerHTML = "";
+  for (const a of AREAS) {
+    const b = document.createElement("button");
+    b.className = "tab";
+    b.setAttribute("role", "tab");
+    b.setAttribute("aria-selected", String(a.key === currentArea));
+    b.textContent = a.label;
+    b.addEventListener("click", () => { currentArea = a.key; renderArea(); });
+    nav.appendChild(b);
+  }
+}
+
+function renderLegend() {
+  const el = document.getElementById("legend");
+  el.innerHTML = Object.entries(CAT)
+    .map(([name, c]) => `<span><i class="dot" style="background:${c.hex}"></i>${name}</span>`)
+    .join("");
+}
+
+function cardHtml(s) {
+  const meal = s.mealSlot ? `<span class="chip meal-slot">${s.mealSlot}</span>` : "";
+  const warn = s.memo.startsWith("⚠️");
+  const memo = s.memo ? `<p class="memo${warn ? " warn" : ""}">${s.memo}</p>` : "";
+  const hours = s.hours ? `<p class="hours">🕐 ${s.hours}</p>` : "";
+  return `
+    <span class="disc" style="background:${CAT[s.category].hex}">${s.no}</span>
+    <span>
+      <h2>${s.name}</h2>
+      <span class="chips">
+        <span class="chip" style="color:${CAT[s.category].hex}">${s.category}</span>${meal}
+      </span>
+      ${hours}${memo}
+      <p class="addr">${s.address}</p>
+      <span class="links"><a class="gmap" href="${gmapUrl(s)}" target="_blank" rel="noopener" onclick="event.stopPropagation()">Googleマップで開く ↗</a></span>
+    </span>`;
+}
+
+function focusSpot(s, { fromMap = false } = {}) {
+  document.querySelectorAll(".card").forEach(c => c.classList.remove("active"));
+  const card = document.getElementById(`card-${s.id}`);
+  if (card) {
+    card.classList.add("active");
+    if (fromMap) card.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "nearest" });
+  }
+  const m = markers[s.id];
+  if (m) {
+    if (!fromMap) {
+      if (reduceMotion) map.setView([s.lat, s.lng], Math.max(map.getZoom(), 16));
+      else map.flyTo([s.lat, s.lng], Math.max(map.getZoom(), 16), { duration: 0.6 });
+    }
+    m.openPopup();
+  }
+}
+
+function renderArea() {
+  renderTabs();
+  const spots = spotsFor(currentArea);
+
+  Object.values(markers).forEach(m => m.remove());
+  markers = {};
+
+  const list = document.getElementById("list");
+  list.innerHTML = "";
+
+  for (const s of spots) {
+    const m = L.marker([s.lat, s.lng], { icon: pinIcon(s), alt: `${s.no} ${s.name}` }).addTo(map);
+    m.bindPopup(
+      `<div class="popup-name">${s.no}. ${s.name}</div>` +
+      (s.hours ? `<div class="popup-hours">🕐 ${s.hours}</div>` : "") +
+      `<a class="popup-link" href="${gmapUrl(s)}" target="_blank" rel="noopener">Googleマップ ↗</a>`
+    );
+    m.on("click", () => focusSpot(s, { fromMap: true }));
+    markers[s.id] = m;
+
+    const card = document.createElement("button");
+    card.className = "card";
+    card.id = `card-${s.id}`;
+    card.innerHTML = cardHtml(s);
+    card.addEventListener("click", () => focusSpot(s));
+    list.appendChild(card);
+  }
+
+  const bounds = L.latLngBounds(spots.map(s => [s.lat, s.lng]));
+  map.fitBounds(bounds, { padding: [40, 40], maxZoom: 16, animate: false });
+}
+
+renderLegend();
+renderArea();
+</script>
+</body>
+</html>
