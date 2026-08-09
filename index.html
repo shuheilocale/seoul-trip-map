@@ -215,6 +215,10 @@ nav {
 .phrase.star { background: #FFF8E7; border: 1px solid #F0E0B8; border-radius: 12px; padding: 12px; }
 .ltable { width: 100%; border-collapse: collapse; font-size: 13px; }
 .ltable td { padding: 7px 6px; border-bottom: 1px solid var(--line); vertical-align: top; }
+.ltable th {
+  text-align: left; font-size: 11.5px; color: var(--sub); font-weight: 600;
+  padding: 4px 6px; border-bottom: 1.5px solid var(--line);
+}
 .ltable tr:last-child td { border-bottom: none; }
 .ltable .ko-cell { font-weight: 700; font-size: 15px; white-space: nowrap; }
 .ltable .yomi-cell { color: var(--kr-blue); font-weight: 600; font-size: 12.5px; white-space: nowrap; }
@@ -269,10 +273,16 @@ nav {
     </ul>
   </div>
   <div class="day">
-    <p class="group-title">💳 お金</p>
-    <ul class="tips-list">
-      <li><b>WOWPASS(チャージ式カード)+T-money</b>の2本立て。空港ではチャージのみにする</li>
-      <li>まとまった両替はDay1に<b>明洞のマネープラネット</b>で(黄色看板・レート良・9:00〜20:30)。場所は明洞マップの⑭</li>
+    <p class="group-title">💳 お金の配分プラン</p>
+    <table class="ltable">
+      <tr><th>場所</th><th>額</th><th>用途</th></tr>
+      <tr><td><b>空港</b></td><td>8,000円→ウォン<br>→T-money 4枚</td><td>交通費(カード代込み・子ども登録忘れずに)</td></tr>
+      <tr><td><b>明洞</b></td><td>2万円→現金ウォン</td><td>屋台・現金オンリー店・緊急用</td></tr>
+      <tr><td><b>WOWPASS</b></td><td>3.5万+2.5万円の2段階</td><td>食事・カフェ・小口買い物</td></tr>
+    </table>
+    <ul class="tips-list" style="margin-top:8px">
+      <li>明洞の両替はDay1に<b>マネープラネット</b>(明洞マップ⑭・黄色看板・9:00〜20:30)で</li>
+      <li>WOWPASSの2回目チャージは<b>明洞駅構内のチャージ機</b>(明洞マップ⑮・6:00〜23:59)。深夜ならソウルプリンスホテル(明洞駅2番出口30m)のフロント機が24時間</li>
       <li>支払いはカードメイン+現金少々。カードは2枚以上を別々に持って分散</li>
     </ul>
   </div>
@@ -569,6 +579,19 @@ const SPOTS = [
   },
   {
     "id": 14,
+    "no": 15,
+    "area": "明洞",
+    "name": "WOWPASSチャージ機 明洞駅",
+    "category": "スポット",
+    "mealSlot": "",
+    "hours": "6:00-23:59",
+    "memo": "4号線明洞駅の構内(改札外)。2回目チャージ・残高不足時に。24時間対応はソウルプリンスホテル(2番出口30m)のフロント機",
+    "address": "Myeongdong Station, 126 Toegye-ro, Jung District, Seoul",
+    "lat": 37.56097,
+    "lng": 126.98646
+  },
+  {
+    "id": 15,
     "no": 1,
     "area": "聖水",
     "name": "fwee Agit 聖水",
@@ -581,7 +604,7 @@ const SPOTS = [
     "lng": 127.05516
   },
   {
-    "id": 15,
+    "id": 16,
     "no": 2,
     "area": "聖水",
     "name": "Musinsa Store 聖水",
@@ -594,7 +617,7 @@ const SPOTS = [
     "lng": 127.05639
   },
   {
-    "id": 16,
+    "id": 17,
     "no": 3,
     "area": "聖水",
     "name": "大林倉庫",
@@ -607,7 +630,7 @@ const SPOTS = [
     "lng": 127.05646
   },
   {
-    "id": 17,
+    "id": 18,
     "no": 4,
     "area": "聖水",
     "name": "EQL SEONGSU GROVE",
@@ -620,7 +643,7 @@ const SPOTS = [
     "lng": 127.05883
   },
   {
-    "id": 18,
+    "id": 19,
     "no": 5,
     "area": "聖水",
     "name": "Tamburins 聖水",
@@ -633,7 +656,7 @@ const SPOTS = [
     "lng": 127.0526
   },
   {
-    "id": 19,
+    "id": 20,
     "no": 6,
     "area": "聖水",
     "name": "Cafe Onion 聖水",
@@ -646,7 +669,7 @@ const SPOTS = [
     "lng": 127.05821
   },
   {
-    "id": 20,
+    "id": 21,
     "no": 1,
     "area": "江南",
     "name": "SEA LIFE COEX",
@@ -659,7 +682,7 @@ const SPOTS = [
     "lng": 127.05828
   },
   {
-    "id": 21,
+    "id": 22,
     "no": 2,
     "area": "江南",
     "name": "スターフィールドCOEXモール",
@@ -672,7 +695,7 @@ const SPOTS = [
     "lng": 127.05979
   },
   {
-    "id": 22,
+    "id": 23,
     "no": 3,
     "area": "江南",
     "name": "別マダン図書館",
@@ -685,7 +708,7 @@ const SPOTS = [
     "lng": 127.06012
   },
   {
-    "id": 23,
+    "id": 24,
     "no": 4,
     "area": "江南",
     "name": "MINISO 江南店",
@@ -720,7 +743,7 @@ const ITINERARY = [
       { time: "07:00", icon: "✈️", text: "福岡空港 国際線に集合。カウンターで「4人並びで」依頼。搭乗前にスマホ全員フル充電(機内モバイルバッテリー使用不可)" },
       { time: "09:00", icon: "✈️", text: "福岡発" },
       { time: "10:30", text: "仁川空港着 → 入国・荷物受取。eSIM通信オン" },
-      { time: "11:15", text: "WOWPASSに日本円チャージ+T-money振替(まとまった両替は市内で)" },
+      { time: "11:15", text: "空港では8,000円分だけ両替→T-money4枚購入(子ども登録忘れずに)+WOWPASSに3.5万円チャージ。まとまった両替は明洞で(→Tipsタブ「お金の配分プラン」)" },
       { time: "11:45", icon: "🚇", text: "AREX一般列車でソウル駅へ(約60分・T-moneyでそのまま乗車)" },
       { time: "12:50", icon: "🚕", text: "ソウル駅 → ホテル(k.ride 5〜10分 or 地下鉄1駅)" },
       { time: "13:15", text: "ホテル着・荷物預け" },
