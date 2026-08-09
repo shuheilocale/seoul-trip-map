@@ -174,9 +174,9 @@ nav {
   border-radius: 999px; padding: 2px 14px;
 }
 .day-theme { font-family: var(--disp); font-weight: 700; font-size: 14px; color: var(--sub); }
-.islot { display: grid; grid-template-columns: 46px 1fr; gap: 10px; padding: 5px 0; }
+.islot { display: grid; grid-template-columns: 54px 1fr; gap: 10px; padding: 5px 0; }
 .islot .when {
-  font-family: var(--disp); font-weight: 700; font-size: 12px;
+  font-family: var(--disp); font-weight: 700; font-size: 11.5px; line-height: 1.35;
   padding-top: 4px; text-align: right;
 }
 .islot .body { border-left: 2px solid var(--line); padding-left: 12px; min-height: 30px; }
@@ -192,6 +192,32 @@ nav {
 .ispot .sname { font-family: var(--disp); font-weight: 700; font-size: 14px; line-height: 1.45; }
 .ispot .snote { font-size: 12px; color: var(--sub); }
 .ispot .snote.warn { color: var(--c-meal); font-weight: 600; }
+
+/* ---------- Tips ---------- */
+.group-title { font-family: var(--disp); font-weight: 700; font-size: 15px; margin-bottom: 8px; }
+.tips-list { list-style: none; }
+.tips-list li {
+  font-size: 13.5px; line-height: 1.65; padding: 6px 0 6px 22px; position: relative;
+}
+.tips-list li::before {
+  content: ""; position: absolute; left: 6px; top: 13px;
+  width: 7px; height: 7px; border-radius: 50%; background: var(--kr-red);
+}
+.tips-list li:nth-child(even)::before { background: var(--kr-blue); }
+.tips-list b { font-weight: 700; }
+
+/* ---------- 韓国語 ---------- */
+.phrase { padding: 9px 0; border-bottom: 1px dashed var(--line); }
+.phrase:last-child { border-bottom: none; }
+.ko { font-weight: 700; font-size: 17px; line-height: 1.5; }
+.yomi { color: var(--kr-blue); font-size: 12.5px; font-weight: 600; }
+.imi { font-size: 13px; color: var(--sub); }
+.phrase.star { background: #FFF8E7; border: 1px solid #F0E0B8; border-radius: 12px; padding: 12px; }
+.ltable { width: 100%; border-collapse: collapse; font-size: 13px; }
+.ltable td { padding: 7px 6px; border-bottom: 1px solid var(--line); vertical-align: top; }
+.ltable tr:last-child td { border-bottom: none; }
+.ltable .ko-cell { font-weight: 700; font-size: 15px; white-space: nowrap; }
+.ltable .yomi-cell { color: var(--kr-blue); font-weight: 600; font-size: 12.5px; white-space: nowrap; }
 
 @media (prefers-reduced-motion: reduce) {
   * { transition: none !important; }
@@ -209,8 +235,142 @@ nav {
 <nav role="tablist" aria-label="エリア切り替え" id="tabs"></nav>
 
 <section class="itin" id="itin" hidden>
-  <p class="itin-note">時間帯はめやすです。各スポットをタップすると地図に飛びます。</p>
+  <p class="itin-note">時間は現地の状況で前後してOK。スポット名をタップすると地図に飛びます。</p>
   <div id="itin-days"></div>
+</section>
+
+<section class="itin" id="tips" hidden>
+  <div class="day">
+    <p class="group-title">🛍️ 買い物・お土産</p>
+    <ul class="tips-list">
+      <li><b>液体系(顔パック・ディフューザー・コスメ大容量など)は遅くとも2日目までに購入</b> → お店で梱包依頼 → その夜のうちにスーツケースへ</li>
+      <li>3日目に買っていいのは<b>機内持ち込みできる物だけ</b>(100ml超の液体はNG。南大門でも買わない)</li>
+      <li>免税は一般店なら<b>その場で即時還付</b>(パスポート提示)。買う物を事前に決めておくとスムーズ</li>
+      <li>fweeのまとめ買いは明洞のオリーブヤングでも可(即時還付対応)</li>
+      <li>hetrasで梱包を頼むフレーズは「🇰🇷 韓国語」タブにあります</li>
+      <li>空港免税品の<b>密封袋は開けない</b>(直行便なので福岡までOK)</li>
+    </ul>
+  </div>
+  <div class="day">
+    <p class="group-title">🚇 移動</p>
+    <ul class="tips-list">
+      <li>市内は「<b>行きは地下鉄・帰りはk.ride</b>(Uberは保険)」。雨・夕方ラッシュ・深夜は地下鉄が確実</li>
+      <li><b>2日目夕方の江南→明洞は渋滞注意</b>。タクシーより地下鉄で</li>
+      <li>地下鉄・バスはT-moneyでタッチ乗車。残高は最終日の南大門市場で使い切る</li>
+      <li>AREX直通(空港⇔ソウル駅)は全席指定。乗る便の<b>次発の時刻も控えておく</b>と遅れても安心</li>
+    </ul>
+  </div>
+  <div class="day">
+    <p class="group-title">📱 スマホ</p>
+    <ul class="tips-list">
+      <li>Google/NAVERマップの<b>オフライン地図保存</b>+Papagoの韓国語データDLを出発前に(全員分)</li>
+      <li>写真のクラウド自動バックアップは「<b>モバイル通信ではオフ</b>」に(ギガ節約)</li>
+      <li>モバイルバッテリーは<b>手荷物のみ・機内では使用/充電禁止</b>・1人2個まで・1個ずつジップ袋。搭乗前に空港でフル充電しておく</li>
+    </ul>
+  </div>
+  <div class="day">
+    <p class="group-title">💳 お金</p>
+    <ul class="tips-list">
+      <li><b>WOWPASS(チャージ式カード)+T-money</b>の2本立て。まとまった両替は空港ではなく市内の両替所で</li>
+      <li>支払いはカードメイン+現金少々。カードは2枚以上を別々に持って分散</li>
+    </ul>
+  </div>
+  <div class="day">
+    <p class="group-title">👨‍👩‍👧‍👦 家族ルール</p>
+    <ul class="tips-list">
+      <li><b>はぐれたら動かない</b>(その場で待つ)。最終集合場所はホテル</li>
+      <li>迷子カードを全員携帯。別行動のときは家族LINEでこまめに連絡</li>
+    </ul>
+  </div>
+  <div class="day">
+    <p class="group-title">🧰 持ち物メモ</p>
+    <ul class="tips-list">
+      <li>変換プラグは<b>Cタイプ</b></li>
+      <li>薬は元の容器のまま+お薬手帳を手荷物に</li>
+      <li>ジップ袋は多めに(バッテリー・液体・小分け土産に万能)</li>
+    </ul>
+  </div>
+</section>
+
+<section class="itin" id="lang" hidden>
+  <div class="day">
+    <p class="group-title">🙏 まずはこれだけ</p>
+    <div class="phrase"><div class="ko" lang="ko">안녕하세요</div><div class="yomi">アンニョンハセヨ</div><div class="imi">こんにちは</div></div>
+    <div class="phrase"><div class="ko" lang="ko">감사합니다</div><div class="yomi">カムサハムニダ</div><div class="imi">ありがとうございます</div></div>
+    <div class="phrase"><div class="ko" lang="ko">죄송합니다</div><div class="yomi">チェソンハムニダ</div><div class="imi">すみません(謝るとき)</div></div>
+    <div class="phrase"><div class="ko" lang="ko">여기요!</div><div class="yomi">ヨギヨ!</div><div class="imi">すみませ〜ん!(店員さんを呼ぶとき)</div></div>
+    <div class="phrase"><div class="ko" lang="ko">괜찮아요</div><div class="yomi">ケンチャナヨ</div><div class="imi">大丈夫です/結構です</div></div>
+    <div class="phrase"><div class="ko" lang="ko">일본 사람이에요</div><div class="yomi">イルボン サラミエヨ</div><div class="imi">日本人です</div></div>
+  </div>
+  <div class="day">
+    <p class="group-title">🍚 お店・食事で</p>
+    <div class="phrase"><div class="ko" lang="ko">이거 주세요</div><div class="yomi">イゴ ジュセヨ</div><div class="imi">これください(指差しで最強)</div></div>
+    <div class="phrase"><div class="ko" lang="ko">얼마예요?</div><div class="yomi">オルマエヨ?</div><div class="imi">いくらですか?</div></div>
+    <div class="phrase"><div class="ko" lang="ko">카드 돼요?</div><div class="yomi">カドゥ テヨ?</div><div class="imi">カード使えますか?</div></div>
+    <div class="phrase"><div class="ko" lang="ko">물 주세요</div><div class="yomi">ムル ジュセヨ</div><div class="imi">お水ください</div></div>
+    <div class="phrase"><div class="ko" lang="ko">안 맵게 해 주세요</div><div class="yomi">アン メプケ ヘ ジュセヨ</div><div class="imi">辛くしないでください(子ども用に◎)</div></div>
+    <div class="phrase"><div class="ko" lang="ko">화장실 어디예요?</div><div class="yomi">ファジャンシル オディエヨ?</div><div class="imi">トイレはどこですか?</div></div>
+    <div class="phrase"><div class="ko" lang="ko">포장해 주세요</div><div class="yomi">ポジャンヘ ジュセヨ</div><div class="imi">包んでください/持ち帰りで</div></div>
+    <div class="phrase"><div class="ko" lang="ko">계산해 주세요</div><div class="yomi">ケサネ ジュセヨ</div><div class="imi">お会計お願いします</div></div>
+  </div>
+  <div class="day">
+    <p class="group-title">🎁 hetrasの梱包依頼はこれ(見せてもOK)</p>
+    <div class="phrase star">
+      <div class="ko" lang="ko">비행기로 일본에 가져갈 거예요. 새지 않게 포장해 주세요.</div>
+      <div class="yomi">ピヘンギロ イルボネ カジョガル コエヨ。セジ アンケ ポジャンヘ ジュセヨ</div>
+      <div class="imi">飛行機で日本に持って帰ります。漏れないように梱包してください。</div>
+    </div>
+  </div>
+  <div class="day">
+    <p class="group-title">📖 単語帳</p>
+    <table class="ltable">
+      <tr><td class="ko-cell" lang="ko">물</td><td class="yomi-cell">ムル</td><td>水</td></tr>
+      <tr><td class="ko-cell" lang="ko">밥</td><td class="yomi-cell">パプ</td><td>ごはん</td></tr>
+      <tr><td class="ko-cell" lang="ko">젓가락</td><td class="yomi-cell">チョッカラク</td><td>箸</td></tr>
+      <tr><td class="ko-cell" lang="ko">숟가락</td><td class="yomi-cell">スッカラク</td><td>スプーン</td></tr>
+      <tr><td class="ko-cell" lang="ko">포크</td><td class="yomi-cell">ポク</td><td>フォーク</td></tr>
+      <tr><td class="ko-cell" lang="ko">컵</td><td class="yomi-cell">コプ</td><td>コップ</td></tr>
+      <tr><td class="ko-cell" lang="ko">반찬</td><td class="yomi-cell">パンチャン</td><td>おかず(お代わり無料が多い)</td></tr>
+      <tr><td class="ko-cell" lang="ko">매워요</td><td class="yomi-cell">メウォヨ</td><td>辛いです</td></tr>
+      <tr><td class="ko-cell" lang="ko">화장실</td><td class="yomi-cell">ファジャンシル</td><td>トイレ</td></tr>
+      <tr><td class="ko-cell" lang="ko">편의점</td><td class="yomi-cell">ピョニジョム</td><td>コンビニ</td></tr>
+      <tr><td class="ko-cell" lang="ko">지하철</td><td class="yomi-cell">チハチョル</td><td>地下鉄</td></tr>
+      <tr><td class="ko-cell" lang="ko">역</td><td class="yomi-cell">ヨク</td><td>駅</td></tr>
+      <tr><td class="ko-cell" lang="ko">카드</td><td class="yomi-cell">カドゥ</td><td>カード</td></tr>
+      <tr><td class="ko-cell" lang="ko">현금</td><td class="yomi-cell">ヒョングム</td><td>現金</td></tr>
+      <tr><td class="ko-cell" lang="ko">영수증</td><td class="yomi-cell">ヨンスジュン</td><td>レシート</td></tr>
+      <tr><td class="ko-cell" lang="ko">봉투</td><td class="yomi-cell">ポントゥ</td><td>袋</td></tr>
+    </table>
+  </div>
+  <div class="day">
+    <p class="group-title">🗺️ 地名の読み方</p>
+    <table class="ltable">
+      <tr><td>明洞</td><td class="ko-cell" lang="ko">명동</td><td class="yomi-cell">ミョンドン</td></tr>
+      <tr><td>会賢(宿の最寄り駅)</td><td class="ko-cell" lang="ko">회현</td><td class="yomi-cell">フェヒョン</td></tr>
+      <tr><td>聖水</td><td class="ko-cell" lang="ko">성수</td><td class="yomi-cell">ソンス</td></tr>
+      <tr><td>乙支路3街(乗換駅)</td><td class="ko-cell" lang="ko">을지로3가</td><td class="yomi-cell">ウルチロサムガ</td></tr>
+      <tr><td>江南</td><td class="ko-cell" lang="ko">강남</td><td class="yomi-cell">カンナム</td></tr>
+      <tr><td>三成(COEXの駅)</td><td class="ko-cell" lang="ko">삼성</td><td class="yomi-cell">サムソン</td></tr>
+      <tr><td>ソウル駅</td><td class="ko-cell" lang="ko">서울역</td><td class="yomi-cell">ソウリョク</td></tr>
+      <tr><td>南大門市場</td><td class="ko-cell" lang="ko">남대문시장</td><td class="yomi-cell">ナムデムンシジャン</td></tr>
+      <tr><td>仁川空港</td><td class="ko-cell" lang="ko">인천공항</td><td class="yomi-cell">インチョンコンハン</td></tr>
+    </table>
+  </div>
+  <div class="day">
+    <p class="group-title">🔢 数字(値段はこっち)</p>
+    <table class="ltable">
+      <tr><td>1</td><td class="ko-cell" lang="ko">일</td><td class="yomi-cell">イル</td><td>6</td><td class="ko-cell" lang="ko">육</td><td class="yomi-cell">ユク</td></tr>
+      <tr><td>2</td><td class="ko-cell" lang="ko">이</td><td class="yomi-cell">イ</td><td>7</td><td class="ko-cell" lang="ko">칠</td><td class="yomi-cell">チル</td></tr>
+      <tr><td>3</td><td class="ko-cell" lang="ko">삼</td><td class="yomi-cell">サム</td><td>8</td><td class="ko-cell" lang="ko">팔</td><td class="yomi-cell">パル</td></tr>
+      <tr><td>4</td><td class="ko-cell" lang="ko">사</td><td class="yomi-cell">サ</td><td>9</td><td class="ko-cell" lang="ko">구</td><td class="yomi-cell">ク</td></tr>
+      <tr><td>5</td><td class="ko-cell" lang="ko">오</td><td class="yomi-cell">オ</td><td>10</td><td class="ko-cell" lang="ko">십</td><td class="yomi-cell">シプ</td></tr>
+      <tr><td>1,000</td><td class="ko-cell" lang="ko">천</td><td class="yomi-cell">チョン</td><td>10,000</td><td class="ko-cell" lang="ko">만</td><td class="yomi-cell">マン</td></tr>
+    </table>
+    <ul class="tips-list" style="margin-top:8px">
+      <li><b>만 원(マンウォン)=1万ウォン≒約1,000円</b>。「0を1個取って円」がざっくり換算</li>
+      <li>個数を言うときは固有数詞: 하나(ハナ)=1つ、둘(トゥル)=2つ。「<span lang="ko">두 개 주세요</span>(トゥ ゲ ジュセヨ)=2個ください」</li>
+    </ul>
+  </div>
 </section>
 
 <div class="wrap" id="main">
@@ -375,7 +535,7 @@ const SPOTS = [
     "category": "食事",
     "mealSlot": "Day3 昼",
     "hours": "10:30-22:15",
-    "memo": "B1F・評価4.9。鶏丸ごと鍋。混む前の12時台前半に入店",
+    "memo": "B1F・評価4.9。鶏丸ごと鍋。11:45入店=昼ラッシュ前が好条件・12:40には店を出る",
     "address": "Hyodam Kalguksu, 12 Myeongdong 3-gil, Jung District, Seoul",
     "lat": 37.56423,
     "lng": 126.98353
@@ -531,55 +691,86 @@ const AREAS = [
   { key: "聖水", label: "聖水" },
   { key: "江南", label: "COEX&カンナム" },
   { key: "all", label: "全体" },
+  { key: "tips", label: "💡 Tips" },
+  { key: "lang", label: "🇰🇷 韓国語" },
 ];
+
+const PANELS = ["itin", "tips", "lang"];
 
 const ITINERARY = [
   {
     day: "Day 1",
-    theme: "聖水 → 明洞",
+    theme: "到着 → 聖水 → 明洞で焼肉",
     color: "#CD2E3A",
     items: [
-      { time: "午前", icon: "✈️", text: "ソウル到着 → ホテルに荷物(会賢駅すぐ)" },
-      { time: "午後", icon: "🚇", text: "地下鉄で聖水へ" },
-      { spot: "fwee Agit 聖水", note: "プリンポットが看板・購入特典あり" },
-      { spot: "Musinsa Store 聖水", note: "スニーカーウォールが圧巻" },
-      { spot: "大林倉庫", note: "カフェ休憩(予備: Cafe Onion)" },
-      { spot: "EQL SEONGSU GROVE", note: "2Fの週替わりポップアップ" },
-      { spot: "Tamburins 聖水", note: "ハンドクリームが土産定番" },
-      { time: "夕方", icon: "🚇", text: "明洞へ移動" },
-      { spot: "ジェントルモンスター ロッテ百貨店本店", note: "⚠️平日20時閉店・一発目に" },
-      { spot: "hetras 明洞店", note: "液体土産を購入→梱包依頼→スーツケースへ" },
-      { spot: "nyu nyu 明洞店", note: "hetrasの隣。バラマキ土産" },
-      { muted: true, text: "予備: ムシンサ スタンダード / MINISO 明洞(聖水で回りきれなかった分)" },
-      { time: "夜", spot: "ユットンリョン 明洞本店", note: "18時台早めに入店。焼肉+〆冷麺" },
-      { time: "食後", spot: "ダイソー 明洞駅店", note: "宿から一番近い・22時まで" },
-      { spot: "MIMILINE 明洞店", note: "23時まで営業なので最後尾でOK" },
+      { time: "07:00", icon: "✈️", text: "福岡空港 国際線に集合。カウンターで「4人並びで」依頼。搭乗前にスマホ全員フル充電(機内モバイルバッテリー使用不可)" },
+      { time: "09:00", icon: "✈️", text: "福岡発" },
+      { time: "10:30", text: "仁川空港着 → 入国・荷物受取。eSIM通信オン" },
+      { time: "11:15", text: "WOWPASSに日本円チャージ+T-money振替(まとまった両替は市内で)" },
+      { time: "11:45", icon: "🚇", text: "AREX一般列車でソウル駅へ(約60分・T-moneyでそのまま乗車)" },
+      { time: "12:50", icon: "🚕", text: "ソウル駅 → ホテル(k.ride 5〜10分 or 地下鉄1駅)" },
+      { time: "13:15", text: "ホテル着・荷物預け" },
+      { time: "13:30", text: "明洞で軽めの昼=食べ歩き(ホットク・マンドゥ・トッポギ等)" },
+      { time: "14:30", icon: "🚇", text: "地下鉄2号線で聖水へ(約30分・乙支路3街から1本)" },
+      { time: "15:00-17:00", text: "聖水散策(全て屋内・点から点へ最短移動の涼み拠点方式)" },
+      { spot: "fwee Agit 聖水", note: "駅徒歩3分。プリンポットが看板・購入でミニリップキーホルダー特典。まとめ買いは明洞オリヤンでも可" },
+      { spot: "大林倉庫", note: "倉庫リノベカフェで涼憩。カフェ組とムシンサ組でミニ別行動可" },
+      { spot: "Musinsa Store 聖水", note: "大林倉庫の隣。評価4.9・スニーカーウォール" },
+      { spot: "EQL SEONGSU GROVE", note: "2階ポップアップが週替わりのセレクトショップ" },
+      { spot: "Tamburins 聖水", note: "美術館的空間の香水店。ハンドクリームが土産定番。列あるが回転速い" },
+      { muted: true, text: "予備: Cafe Onion 聖水(塩パン名物・大林倉庫と二択)。ポップアップは出発前にInstagramで「성수 팝업」をチェック" },
+      { time: "17:00", icon: "🚇", text: "2号線で明洞へ戻る → ホテルチェックイン" },
+      { time: "17:30-18:15", text: "明洞ショッピング【北→中央→南の一筆書き】" },
+      { spot: "ジェントルモンスター ロッテ百貨店本店", note: "⚠️平日20:00閉店なので最優先・一発目に" },
+      { spot: "hetras 明洞店", note: "液体土産(ディフューザー等)はここで購入→梱包依頼→スーツケースへ" },
+      { spot: "nyu nyu 明洞店", note: "hetrasのすぐ隣。バラマキ土産宝庫" },
+      { time: "18:30", spot: "ユットンリョン 明洞本店", note: "焼肉+〆冷麺。タブレット注文・スタッフが焼いてくれる。18時台早めに" },
+      { time: "20:30", text: "食後買い物 or 夜散歩 or 休息(※ジェンモンはもう閉店)" },
+      { spot: "ダイソー 明洞駅店", note: "〜22時。ホテル方向に帰りながら寄れる" },
+      { spot: "MIMILINE 明洞店", note: "〜23時。閉店が一番遅いので最後尾でOK" },
     ],
   },
   {
     day: "Day 2",
-    theme: "COEX&カンナム",
+    theme: "江南・COEXデー(別行動)",
     color: "#0047A0",
     items: [
-      { time: "朝", spot: "神仙ソルロンタン 明洞店", note: "8時〜。キムチ食べ放題・キッズメニューあり" },
-      { time: "午前", icon: "🚇", text: "地下鉄2号線で三成駅(COEX)へ" },
-      { muted: true, text: "ここから二手に分かれてもOK(水族館チーム/買い物チーム)" },
-      { spot: "SEA LIFE COEX", note: "水中トンネルとマーメイドショー。所要2時間" },
-      { time: "昼", spot: "スターフィールドCOEXモール", note: "買い物チームの主戦場。昼はフードコートで" },
-      { time: "午後", spot: "別マダン図書館", note: "合流してみんなで。COEX内B1の映えスポット" },
-      { time: "夕方", spot: "MINISO 江南店", note: "液体土産はこの日までに購入" },
-      { time: "夜", icon: "🧳", text: "ホテルで液体土産をスーツケースへ" },
+      { time: "08:15", text: "ホテル発" },
+      { time: "08:30", spot: "神仙ソルロンタン 明洞店", note: "あっさり牛骨スープ+ごはん。塩で各自味調整・キムチ食べ放題・キッズメニューあり。混雑時は2+2席でも気にしない" },
+      { time: "09:30", icon: "🚇", text: "地下鉄でCOEXへ(乗換1回・約30分)。行きは地下鉄" },
+      { time: "10:30-13:00", text: "別行動タイム(同じ建物内・家族LINEで連絡)" },
+      { spot: "SEA LIFE COEX", note: "水族館チーム。水中トンネルとマーメイドショー・所要2時間" },
+      { spot: "スターフィールドCOEXモール", note: "買い物チーム。星の図書館(別マダン図書館)も" },
+      { time: "13:00", text: "【昼】COEXモール内(フードコート等)" },
+      { time: "14:30-16:00", spot: "MINISO 江南店", note: "+江南散策。液体土産(コスメ大容量等)はこの日までに購入" },
+      { time: "17:00", icon: "🚇", text: "明洞へ戻る(夕方渋滞ならk.rideより地下鉄)" },
+      { time: "18:30", text: "【夜】明洞で夕食(チキン or 広蔵市場・未確定)" },
+      { time: "20:00", icon: "🧳", text: "荷造り: 液体物・大物をすべてスーツケースへ(明朝ソウル駅で預けるため今夜中に完了)" },
     ],
   },
   {
     day: "Day 3",
-    theme: "明洞 → 帰国",
+    theme: "朝おかゆ → 手ぶら観光 → 帰国",
     color: "#2B8A3E",
     items: [
-      { time: "朝", spot: "本粥&ビビンバ 会賢駅店", note: "宿の目の前・徒歩1分" },
-      { time: "午前", spot: "オリーブヤング 明洞タウン店", note: "最終日は機内持ち込み可の物だけ" },
-      { time: "昼", spot: "孝潭カルグクス・タッカンマリ 明洞本店", note: "混む前の12時台前半に入店" },
-      { time: "午後", icon: "✈️", text: "帰国へ" },
+      { time: "-08:25", text: "荷造り完全完了・部屋を出発状態に(液体物・刃物等はすべてスーツケースへ)" },
+      { time: "08:30", spot: "本粥&ビビンバ 会賢駅店", note: "ホテル目の前・徒歩1分・8:30開店。昼がタッカンマリ鍋なので朝は胃に優しく" },
+      { time: "09:20", text: "ホテル戻り → チェックアウト(9:30発)" },
+      { time: "09:30", icon: "🚕", text: "タクシーでソウル駅へ(5〜10分。地下鉄1駅/徒歩15分でも可)" },
+      { time: "09:45-10:30", text: "ソウル駅 都心空港ターミナル(地下2階): 搭乗手続き+荷物預け → 出国審査完了。カウンターで「4人並びで」依頼。AREX直通は13:30頃発を座席指定(次発の時刻も控える)" },
+      { time: "10:30", text: "搭乗券ゲット・完全手ぶらで観光へ。ソウル駅→南大門 徒歩10分・「ソウル路7017」経由" },
+      { time: "10:40-11:30", text: "南大門市場で食べ歩き+お土産(ホットク・王マンドゥ・のり)。朝おかゆ済みなので軽く・昼に響かせない。T-money使い切り。※100ml超の液体は買わない" },
+      { time: "11:30", icon: "🚶", text: "明洞へ移動(徒歩10分)" },
+      { time: "11:45", spot: "孝潭カルグクス・タッカンマリ 明洞本店", note: "11:45入店=昼ラッシュ前でむしろ好条件。12:40には店を出る" },
+      { time: "12:40-13:00", spot: "オリーブヤング 明洞タウン店", note: "最後の買い物・20分の短縮版。即時還付。機内持ち込み可能な物だけ・買う物は事前に決めておく" },
+      { time: "13:05", icon: "🚕", text: "ソウル駅へ戻る(タクシー5〜10分推奨。手ぶらで身軽)" },
+      { time: "13:30頃", icon: "🚄", text: "AREX直通で仁川へ(約43分・全席指定・地下7階ホーム)。13:15にはソウル駅着が目標" },
+      { time: "14:15", text: "仁川着 → 3階出国ゲート「専用口」へ。一般の列に並ばず専用レーンで手荷物検査のみ(5〜10分)" },
+      { time: "14:30-16:45", text: "制限エリア内でゆったり: 免税品受取→免税店・カフェ・お手洗い→搭乗ゲートへ。密封袋は開けない(直行便なので福岡までOK)" },
+      { time: "16:45頃", text: "搭乗開始めやす・ゲート集合(遠いゲートなら移動20分見込む)" },
+      { time: "17:20", icon: "✈️", text: "仁川発" },
+      { time: "19:00", text: "福岡空港着・おつかれさま!" },
+      { muted: true, text: "遅延時の逃げ道: 13:30のAREXを逃しても次発(約30〜40分後)で15:00前後仁川着=それでも2時間20分前でセーフ" },
     ],
   },
 ];
@@ -624,7 +815,9 @@ function renderItinerary() {
     card.className = "day";
     let html = `<div class="day-head"><span class="day-chip" style="background:${d.color}">${d.day}</span><span class="day-theme">${d.theme}</span></div>`;
     for (const it of d.items) {
-      const when = it.time ? it.time : "";
+      const when = it.time
+        ? it.time.replace(/^(\d{1,2}:\d{2})-(\d{1,2}:\d{2})$/, "$1<br>-$2")
+        : "";
       if (it.spot) {
         const s = spotByName(it.spot);
         const warn = (it.note || "").startsWith("⚠️");
@@ -707,6 +900,9 @@ function renderTabs() {
     b.textContent = a.label;
     b.addEventListener("click", () => { currentArea = a.key; renderArea(); });
     nav.appendChild(b);
+    if (a.key === currentArea) {
+      requestAnimationFrame(() => b.scrollIntoView({ inline: "center", block: "nearest" }));
+    }
   }
 }
 
@@ -758,10 +954,10 @@ function focusSpot(s, { fromMap = false } = {}) {
 function renderArea() {
   renderTabs();
 
-  const isItin = currentArea === "itin";
-  document.getElementById("itin").hidden = !isItin;
-  document.getElementById("main").hidden = isItin;
-  if (isItin) return;
+  const isPanel = PANELS.includes(currentArea);
+  for (const p of PANELS) document.getElementById(p).hidden = currentArea !== p;
+  document.getElementById("main").hidden = isPanel;
+  if (isPanel) return;
   map.invalidateSize();
 
   const spots = spotsFor(currentArea);
