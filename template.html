@@ -221,6 +221,35 @@ function naverUrl(s) {
   return `https://map.naver.com/p/search/${s.lat},${s.lng}`;
 }
 
+const APPNAME = encodeURIComponent("https://shuheilocale.github.io/seoul-trip-map/");
+
+function openNaver(event, id) {
+  const s = SPOTS.find(x => x.id === id);
+  const ua = navigator.userAgent;
+  const name = encodeURIComponent(s.name);
+
+  if (/Android/i.test(ua)) {
+    event.preventDefault();
+    event.stopPropagation();
+    location.href =
+      `intent://place?lat=${s.lat}&lng=${s.lng}&name=${name}&appname=${APPNAME}` +
+      `#Intent;scheme=nmap;action=android.intent.action.VIEW;category=android.intent.category.BROWSABLE;package=com.nhn.android.nmap;end`;
+    return;
+  }
+  if (/iPhone|iPad|iPod/i.test(ua)) {
+    event.preventDefault();
+    event.stopPropagation();
+    // アプリが開けば画面が隠れてタイマーは破棄される。開けなければWeb版へ
+    const fallback = setTimeout(() => { location.href = naverUrl(s); }, 1600);
+    const cancel = () => { if (document.hidden) { clearTimeout(fallback); document.removeEventListener("visibilitychange", cancel); } };
+    document.addEventListener("visibilitychange", cancel);
+    location.href = `nmap://place?lat=${s.lat}&lng=${s.lng}&name=${name}&appname=${APPNAME}`;
+    return;
+  }
+  // PCブラウザは href(Web版)をそのまま開く
+  event.stopPropagation();
+}
+
 function pinIcon(s) {
   return L.divIcon({
     className: "pin",
@@ -272,7 +301,7 @@ function cardHtml(s) {
       <p class="addr">${s.address}</p>
       <span class="links">
         <a class="maplink gmap" href="${gmapUrl(s)}" target="_blank" rel="noopener" onclick="event.stopPropagation()">Googleマップ ↗</a>
-        <a class="maplink nmap" href="${naverUrl(s)}" target="_blank" rel="noopener" onclick="event.stopPropagation()">NAVERマップ ↗</a>
+        <a class="maplink nmap" href="${naverUrl(s)}" target="_blank" rel="noopener" onclick="openNaver(event, ${s.id})">NAVERマップ ↗</a>
       </span>
     </span>`;
 }
@@ -310,7 +339,7 @@ function renderArea() {
       `<div class="popup-name">${s.no}. ${s.name}</div>` +
       (s.hours ? `<div class="popup-hours">🕐 ${s.hours}</div>` : "") +
       `<a class="popup-link" href="${gmapUrl(s)}" target="_blank" rel="noopener">Googleマップ ↗</a>` +
-      `&nbsp;&nbsp;<a class="popup-link" style="color:#03A94E" href="${naverUrl(s)}" target="_blank" rel="noopener">NAVERマップ ↗</a>`
+      `&nbsp;&nbsp;<a class="popup-link" style="color:#03A94E" href="${naverUrl(s)}" target="_blank" rel="noopener" onclick="openNaver(event, ${s.id})">NAVERマップ ↗</a>`
     );
     m.on("click", () => focusSpot(s, { fromMap: true }));
     markers[s.id] = m;
