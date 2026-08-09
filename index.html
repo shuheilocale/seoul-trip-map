@@ -160,6 +160,39 @@ nav {
 .popup-hours { font-size: 12px; color: var(--sub); }
 .popup-link { font-size: 12px; font-weight: 600; color: var(--kr-blue); }
 
+/* ---------- 旅程 ---------- */
+[hidden] { display: none !important; }
+.itin { max-width: 640px; margin: 0 auto; padding: 16px 14px 48px; }
+.itin-note { font-size: 12px; color: var(--sub); margin-bottom: 14px; }
+.day {
+  background: var(--card); border: 1px solid var(--line); border-radius: 16px;
+  padding: 16px; margin-bottom: 16px;
+}
+.day-head { display: flex; align-items: baseline; gap: 10px; margin-bottom: 10px; }
+.day-chip {
+  font-family: var(--disp); font-weight: 900; font-size: 15px; color: #fff;
+  border-radius: 999px; padding: 2px 14px;
+}
+.day-theme { font-family: var(--disp); font-weight: 700; font-size: 14px; color: var(--sub); }
+.islot { display: grid; grid-template-columns: 46px 1fr; gap: 10px; padding: 5px 0; }
+.islot .when {
+  font-family: var(--disp); font-weight: 700; font-size: 12px;
+  padding-top: 4px; text-align: right;
+}
+.islot .body { border-left: 2px solid var(--line); padding-left: 12px; min-height: 30px; }
+.islot.plain .body { font-size: 13.5px; padding-top: 3px; }
+.islot.muted .body { font-size: 12.5px; color: var(--sub); padding-top: 3px; }
+.ispot {
+  display: grid; grid-template-columns: 28px 1fr; gap: 8px; align-items: start;
+  width: 100%; text-align: left; background: none; border: none; padding: 3px 0;
+  font: inherit; color: inherit; cursor: pointer; border-radius: 8px;
+}
+.ispot:focus-visible { outline: 3px solid var(--kr-blue); outline-offset: 2px; }
+.ispot .disc { width: 26px; height: 26px; font-size: 13px; margin-top: 0; }
+.ispot .sname { font-family: var(--disp); font-weight: 700; font-size: 14px; line-height: 1.45; }
+.ispot .snote { font-size: 12px; color: var(--sub); }
+.ispot .snote.warn { color: var(--c-meal); font-weight: 600; }
+
 @media (prefers-reduced-motion: reduce) {
   * { transition: none !important; }
 }
@@ -175,7 +208,12 @@ nav {
 
 <nav role="tablist" aria-label="エリア切り替え" id="tabs"></nav>
 
-<div class="wrap">
+<section class="itin" id="itin" hidden>
+  <p class="itin-note">時間帯はめやすです。各スポットをタップすると地図に飛びます。</p>
+  <div id="itin-days"></div>
+</section>
+
+<div class="wrap" id="main">
   <div id="map" role="region" aria-label="地図"></div>
   <div>
     <div class="legend" id="legend"></div>
@@ -488,10 +526,62 @@ const SPOTS = [
 ];
 
 const AREAS = [
+  { key: "itin", label: "🧳 旅程" },
   { key: "明洞", label: "明洞" },
   { key: "聖水", label: "聖水" },
   { key: "江南", label: "COEX&カンナム" },
   { key: "all", label: "全体" },
+];
+
+const ITINERARY = [
+  {
+    day: "Day 1",
+    theme: "聖水 → 明洞",
+    color: "#CD2E3A",
+    items: [
+      { time: "午前", icon: "✈️", text: "ソウル到着 → ホテルに荷物(会賢駅すぐ)" },
+      { time: "午後", icon: "🚇", text: "地下鉄で聖水へ" },
+      { spot: "fwee Agit 聖水", note: "プリンポットが看板・購入特典あり" },
+      { spot: "Musinsa Store 聖水", note: "スニーカーウォールが圧巻" },
+      { spot: "大林倉庫", note: "カフェ休憩(予備: Cafe Onion)" },
+      { spot: "EQL SEONGSU GROVE", note: "2Fの週替わりポップアップ" },
+      { spot: "Tamburins 聖水", note: "ハンドクリームが土産定番" },
+      { time: "夕方", icon: "🚇", text: "明洞へ移動" },
+      { spot: "ジェントルモンスター ロッテ百貨店本店", note: "⚠️平日20時閉店・一発目に" },
+      { spot: "hetras 明洞店", note: "液体土産を購入→梱包依頼→スーツケースへ" },
+      { spot: "nyu nyu 明洞店", note: "hetrasの隣。バラマキ土産" },
+      { muted: true, text: "予備: ムシンサ スタンダード / MINISO 明洞(聖水で回りきれなかった分)" },
+      { time: "夜", spot: "ユットンリョン 明洞本店", note: "18時台早めに入店。焼肉+〆冷麺" },
+      { time: "食後", spot: "ダイソー 明洞駅店", note: "宿から一番近い・22時まで" },
+      { spot: "MIMILINE 明洞店", note: "23時まで営業なので最後尾でOK" },
+    ],
+  },
+  {
+    day: "Day 2",
+    theme: "COEX&カンナム",
+    color: "#0047A0",
+    items: [
+      { time: "朝", spot: "神仙ソルロンタン 明洞店", note: "8時〜。キムチ食べ放題・キッズメニューあり" },
+      { time: "午前", icon: "🚇", text: "地下鉄2号線で三成駅(COEX)へ" },
+      { muted: true, text: "ここから二手に分かれてもOK(水族館チーム/買い物チーム)" },
+      { spot: "SEA LIFE COEX", note: "水中トンネルとマーメイドショー。所要2時間" },
+      { time: "昼", spot: "スターフィールドCOEXモール", note: "買い物チームの主戦場。昼はフードコートで" },
+      { time: "午後", spot: "別マダン図書館", note: "合流してみんなで。COEX内B1の映えスポット" },
+      { time: "夕方", spot: "MINISO 江南店", note: "液体土産はこの日までに購入" },
+      { time: "夜", icon: "🧳", text: "ホテルで液体土産をスーツケースへ" },
+    ],
+  },
+  {
+    day: "Day 3",
+    theme: "明洞 → 帰国",
+    color: "#2B8A3E",
+    items: [
+      { time: "朝", spot: "本粥&ビビンバ 会賢駅店", note: "宿の目の前・徒歩1分" },
+      { time: "午前", spot: "オリーブヤング 明洞タウン店", note: "最終日は機内持ち込み可の物だけ" },
+      { time: "昼", spot: "孝潭カルグクス・タッカンマリ 明洞本店", note: "混む前の12時台前半に入店" },
+      { time: "午後", icon: "✈️", text: "帰国へ" },
+    ],
+  },
 ];
 
 const CAT = {
@@ -511,7 +601,49 @@ L.tileLayer("https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r
 }).addTo(map);
 
 let markers = {};
-let currentArea = "明洞";
+let currentArea = "itin";
+
+function spotByName(name) {
+  return SPOTS.find(s => s.name === name);
+}
+
+function jumpToSpot(name) {
+  const s = spotByName(name);
+  if (!s) return;
+  currentArea = s.area;
+  renderArea();
+  window.scrollTo({ top: 0, behavior: reduceMotion ? "auto" : "smooth" });
+  requestAnimationFrame(() => focusSpot(s));
+}
+
+function renderItinerary() {
+  const root = document.getElementById("itin-days");
+  root.innerHTML = "";
+  for (const d of ITINERARY) {
+    const card = document.createElement("section");
+    card.className = "day";
+    let html = `<div class="day-head"><span class="day-chip" style="background:${d.color}">${d.day}</span><span class="day-theme">${d.theme}</span></div>`;
+    for (const it of d.items) {
+      const when = it.time ? it.time : "";
+      if (it.spot) {
+        const s = spotByName(it.spot);
+        const warn = (it.note || "").startsWith("⚠️");
+        const inner = s
+          ? `<button class="ispot" onclick="jumpToSpot('${s.name.replace(/'/g, "\\'")}')">
+               <span class="disc" style="background:${CAT[s.category].hex}">${s.no}</span>
+               <span><span class="sname">${s.name}</span><br><span class="snote${warn ? " warn" : ""}">${it.note || ""}</span></span>
+             </button>`
+          : `<div class="ispot"><span>${it.spot}</span></div>`;
+        html += `<div class="islot"><span class="when">${when}</span><div class="body">${inner}</div></div>`;
+      } else {
+        const cls = it.muted ? "islot muted" : "islot plain";
+        html += `<div class="${cls}"><span class="when">${when}</span><div class="body">${it.icon ? it.icon + " " : ""}${it.text}</div></div>`;
+      }
+    }
+    card.innerHTML = html;
+    root.appendChild(card);
+  }
+}
 
 function gmapUrl(s) {
   return `https://www.google.com/maps/search/?api=1&query=${s.lat}%2C${s.lng}`;
@@ -625,6 +757,13 @@ function focusSpot(s, { fromMap = false } = {}) {
 
 function renderArea() {
   renderTabs();
+
+  const isItin = currentArea === "itin";
+  document.getElementById("itin").hidden = !isItin;
+  document.getElementById("main").hidden = isItin;
+  if (isItin) return;
+  map.invalidateSize();
+
   const spots = spotsFor(currentArea);
 
   Object.values(markers).forEach(m => m.remove());
@@ -657,6 +796,7 @@ function renderArea() {
 }
 
 renderLegend();
+renderItinerary();
 renderArea();
 </script>
 </body>
