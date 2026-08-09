@@ -122,14 +122,15 @@ nav {
 .memo { font-size: 13px; margin-top: 4px; }
 .memo.warn { color: var(--c-meal); font-weight: 600; }
 .addr { font-size: 11.5px; color: var(--sub); margin-top: 4px; }
-.links { margin-top: 8px; }
-.gmap {
+.links { margin-top: 8px; display: flex; flex-wrap: wrap; gap: 6px; }
+.maplink {
   display: inline-flex; align-items: center; gap: 5px;
   font-size: 12.5px; font-weight: 600; text-decoration: none;
-  color: var(--kr-blue); border: 1.5px solid var(--kr-blue); border-radius: 999px;
-  padding: 4px 12px;
+  border-radius: 999px; padding: 4px 12px; border: 1.5px solid currentColor;
 }
-.gmap:focus-visible { outline: 3px solid var(--kr-blue); outline-offset: 2px; }
+.maplink.gmap { color: var(--kr-blue); }
+.maplink.nmap { color: #03A94E; }
+.maplink:focus-visible { outline: 3px solid var(--kr-blue); outline-offset: 2px; }
 
 /* ---------- 凡例 ---------- */
 .legend {
@@ -516,6 +517,10 @@ function gmapUrl(s) {
   return `https://www.google.com/maps/search/?api=1&query=${s.lat}%2C${s.lng}`;
 }
 
+function naverUrl(s) {
+  return `https://map.naver.com/p/search/${s.lat},${s.lng}`;
+}
+
 function pinIcon(s) {
   return L.divIcon({
     className: "pin",
@@ -565,7 +570,10 @@ function cardHtml(s) {
       </span>
       ${hours}${memo}
       <p class="addr">${s.address}</p>
-      <span class="links"><a class="gmap" href="${gmapUrl(s)}" target="_blank" rel="noopener" onclick="event.stopPropagation()">Googleマップで開く ↗</a></span>
+      <span class="links">
+        <a class="maplink gmap" href="${gmapUrl(s)}" target="_blank" rel="noopener" onclick="event.stopPropagation()">Googleマップ ↗</a>
+        <a class="maplink nmap" href="${naverUrl(s)}" target="_blank" rel="noopener" onclick="event.stopPropagation()">NAVERマップ ↗</a>
+      </span>
     </span>`;
 }
 
@@ -601,7 +609,8 @@ function renderArea() {
     m.bindPopup(
       `<div class="popup-name">${s.no}. ${s.name}</div>` +
       (s.hours ? `<div class="popup-hours">🕐 ${s.hours}</div>` : "") +
-      `<a class="popup-link" href="${gmapUrl(s)}" target="_blank" rel="noopener">Googleマップ ↗</a>`
+      `<a class="popup-link" href="${gmapUrl(s)}" target="_blank" rel="noopener">Googleマップ ↗</a>` +
+      `&nbsp;&nbsp;<a class="popup-link" style="color:#03A94E" href="${naverUrl(s)}" target="_blank" rel="noopener">NAVERマップ ↗</a>`
     );
     m.on("click", () => focusSpot(s, { fromMap: true }));
     markers[s.id] = m;
