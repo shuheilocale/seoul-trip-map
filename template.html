@@ -206,6 +206,29 @@ nav {
 .tips-list li:nth-child(even)::before { background: var(--kr-blue); }
 .tips-list b { font-weight: 700; }
 
+/* ---------- SOS ---------- */
+.sos-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.sos-num {
+  display: block; text-align: center; text-decoration: none; color: inherit;
+  border: 1.5px solid var(--line); border-radius: 12px; padding: 10px 4px;
+}
+.sos-num b {
+  display: block; font-family: var(--disp); font-weight: 900; font-size: 26px;
+  color: var(--kr-red); line-height: 1.2;
+}
+.sos-num span { font-size: 11.5px; color: var(--sub); }
+.tel {
+  font-family: var(--disp); font-weight: 700; font-size: 17px;
+  color: var(--kr-blue); text-decoration: none; white-space: nowrap;
+}
+.ko-box {
+  background: #F6F1E7; border-radius: 10px; padding: 10px 12px; margin-top: 6px;
+  font-weight: 700; font-size: 16px; line-height: 1.5;
+}
+.ko-box small { display: block; font-weight: 400; font-size: 11px; color: var(--sub); }
+.sos-line { font-size: 13.5px; line-height: 1.7; padding: 4px 0; }
+.sos-line .lbl { color: var(--sub); font-size: 12px; }
+
 /* ---------- 韓国語 ---------- */
 .phrase { padding: 9px 0; border-bottom: 1px dashed var(--line); }
 .phrase:last-child { border-bottom: none; }
@@ -232,7 +255,7 @@ nav {
 <header>
   <div class="brand">
     <div class="taegeuk" aria-hidden="true"></div>
-    <h1>ソウル旅行スポットマップ<small>明洞・聖水・COEX&amp;カンナム|全23スポット</small></h1>
+    <h1>ソウル旅行スポットマップ<small>明洞・聖水・COEX&amp;カンナム|全__COUNT__スポット</small></h1>
   </div>
 </header>
 
@@ -384,6 +407,66 @@ nav {
   </div>
 </section>
 
+<section class="itin" id="sos" hidden>
+  <div class="day">
+    <p class="group-title">📞 緊急電話(タップで発信)</p>
+    <div class="sos-grid">
+      <a class="sos-num" href="tel:112"><b>112</b><span>警察</span></a>
+      <a class="sos-num" href="tel:119"><b>119</b><span>救急車・消防</span></a>
+      <a class="sos-num" href="tel:1330"><b>1330</b><span>観光通訳(日本語24h)</span></a>
+    </div>
+    <ul class="tips-list" style="margin-top:8px">
+      <li><b>1330</b>は韓国観光公社のホットライン。<b>日本語OK・24時間</b>で、病院案内・トラブル相談・通訳までなんでもここ。迷ったらまず1330</li>
+      <li>現地SIM/eSIMならそのまま発信OK。日本の番号のローミングでも112/119はつながる</li>
+    </ul>
+  </div>
+  <div class="day">
+    <p class="group-title">🏨 ホテル(REX HOTEL)= 最終集合場所</p>
+    <p class="sos-line"><span class="lbl">電話:</span> <a class="tel" href="tel:+8227523191">+82-2-752-3191</a></p>
+    <p class="sos-line"><span class="lbl">場所:</span> 会賢駅すぐ・明洞/南大門エリア(地図の明洞①)</p>
+    <div class="ko-box" lang="ko">서울 중구 퇴계로10길 23 (렉스호텔)<small>タクシーの運転手さんにこれを見せる</small></div>
+    <ul class="tips-list" style="margin-top:8px">
+      <li><b>はぐれたら動かない</b>→連絡がつかなければ最終的にここに集合</li>
+    </ul>
+  </div>
+  <div class="day">
+    <p class="group-title">🧳 HIS(旅行会社)</p>
+    <p class="sos-line"><span class="lbl">ソウル支店(営業時間内):</span> <a class="tel" href="tel:+8223351300">+82-2-335-1300</a></p>
+    <p class="sos-line"><span class="lbl">時間外の緊急:</span> <a class="tel" href="tel:+821053982330">+82-10-5398-2330</a></p>
+    <ul class="tips-list" style="margin-top:8px">
+      <li>飛行機の欠航・遅延、ホテルのトラブルなど旅行手配まわりはまずここへ</li>
+    </ul>
+  </div>
+  <div class="day">
+    <p class="group-title">🇯🇵 日本大使館 領事部(パスポート紛失など)</p>
+    <p class="sos-line"><span class="lbl">領事部:</span> <a class="tel" href="tel:+8227397400">+82-2-739-7400</a> <span class="lbl">/ 代表:</span> <a class="tel" href="tel:+82221705200">+82-2-2170-5200</a></p>
+    <p class="sos-line"><span class="lbl">受付:</span> 平日 9:30-12:00 / 13:30-17:00</p>
+    <p class="sos-line"><span class="lbl">場所:</span> ツインツリータワーA棟8-11F(鍾路区・光化門の向かい)</p>
+    <div class="ko-box" lang="ko">서울 종로구 율곡로 6 트윈트리타워 A동<small>タクシーの運転手さんにこれを見せる</small></div>
+    <ul class="tips-list" style="margin-top:8px">
+      <li>パスポート紛失時: ①警察(112)に届けて<b>紛失証明</b>をもらう → ②領事部で<b>「帰国のための渡航書」</b>を申請(顔写真・航空券・紛失証明が必要)</li>
+    </ul>
+  </div>
+  <div class="day">
+    <p class="group-title">💳 紛失・盗難</p>
+    <ul class="tips-list">
+      <li>クレジットカード: カード会社の<b>アプリ or 裏面の緊急番号</b>からすぐ利用停止</li>
+      <li>スマホ: 家族LINEで共有→「探す」(iPhone)/「デバイスを探す」で位置確認</li>
+      <li>タクシーに忘れ物: k.ride/Uberはアプリの乗車履歴から連絡できる</li>
+      <li>T-money・WOWPASSの現金残高は戻らない前提で、チャージは小分けに</li>
+    </ul>
+  </div>
+  <div class="day">
+    <p class="group-title">🏥 病気・けが</p>
+    <ul class="tips-list">
+      <li>緊急は<b>119</b>(救急車)。軽症なら<b>1330</b>に日本語で相談→近くの病院・薬局を案内してくれる</li>
+      <li>薬局は「<span lang="ko">약국</span>(ヤックク)」の緑の十字看板が目印</li>
+      <li>受診したら<b>海外旅行保険のアシスタンスダイヤル</b>へ(キャッシュレス受診できるか確認)。領収書・診断書は必ず保管</li>
+      <li>薬は元容器+お薬手帳を携帯(持病薬の説明に)</li>
+    </ul>
+  </div>
+</section>
+
 <div class="wrap" id="main">
   <div id="map" role="region" aria-label="地図"></div>
   <div>
@@ -404,9 +487,10 @@ const AREAS = [
   { key: "all", label: "全体" },
   { key: "tips", label: "💡 Tips" },
   { key: "lang", label: "🇰🇷 韓国語" },
+  { key: "sos", label: "🆘 SOS" },
 ];
 
-const PANELS = ["itin", "tips", "lang"];
+const PANELS = ["itin", "tips", "lang", "sos"];
 
 const ITINERARY = [
   {

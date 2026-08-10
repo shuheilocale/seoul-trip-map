@@ -31,6 +31,8 @@ with open(CSV_PATH, newline="") as f:
         )
 
 template = (HERE / "template.html").read_text()
-html = template.replace("__DATA__", json.dumps(spots, ensure_ascii=False, indent=2))
+data = json.dumps(spots, ensure_ascii=False, indent=2)
+html = template.replace("__DATA__", data)
+html = html.replace("__COUNT__", str(len(spots)))
 (HERE / "index.html").write_text(html)
 print(f"index.html 生成: {len(spots)} スポット")
