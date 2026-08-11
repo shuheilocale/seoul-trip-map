@@ -207,6 +207,33 @@ nav {
 .tips-list li:nth-child(even)::before { background: var(--kr-blue); }
 .tips-list b { font-weight: 700; }
 
+/* ---------- 買い物リスト ---------- */
+.shop-note { font-size: 12px; color: var(--sub); margin-bottom: 12px; }
+.shop-item {
+  display: grid; grid-template-columns: 28px 64px 1fr; gap: 10px; align-items: start;
+  width: 100%; text-align: left; background: var(--card); border: 1px solid var(--line);
+  border-radius: 14px; padding: 12px; margin-bottom: 10px;
+  font: inherit; color: inherit; cursor: pointer;
+}
+.shop-item.no-img { grid-template-columns: 28px 1fr; }
+.shop-item:focus-visible { outline: 3px solid var(--kr-blue); outline-offset: 2px; }
+.shop-check {
+  width: 24px; height: 24px; border: 2px solid var(--line); border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  color: #fff; font-weight: 700; font-size: 15px; margin-top: 2px;
+}
+.shop-item.done .shop-check { background: var(--c-spot); border-color: var(--c-spot); }
+.shop-item.done .shop-name { text-decoration: line-through; color: var(--sub); }
+.shop-item.done .shop-thumb { opacity: 0.45; }
+.shop-thumb {
+  width: 64px; height: 64px; object-fit: cover; border-radius: 10px;
+  border: 1px solid var(--line); background: #fff;
+}
+.shop-name { font-family: var(--disp); font-weight: 700; font-size: 14px; line-height: 1.45; }
+.shop-where { font-size: 11px; font-weight: 600; color: var(--kr-blue); }
+.shop-memo { font-size: 12px; color: var(--sub); margin-top: 2px; }
+.shop-links { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 7px; }
+
 /* ---------- SOS ---------- */
 .sos-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
 .sos-num {
@@ -419,6 +446,11 @@ nav {
       <li>個数を言うときは固有数詞: 하나(ハナ)=1つ、둘(トゥル)=2つ。「<span lang="ko">두 개 주세요</span>(トゥ ゲ ジュセヨ)=2個ください」</li>
     </ul>
   </div>
+</section>
+
+<section class="itin" id="shop" hidden>
+  <p class="shop-note">タップで購入済みチェック。チェックは各自のスマホにだけ保存されます(家族間では同期されません)。</p>
+  <div id="shop-list"></div>
 </section>
 
 <section class="itin" id="sos" hidden>
@@ -851,12 +883,55 @@ const AREAS = [
   { key: "聖水", label: "聖水" },
   { key: "江南", label: "COEX&カンナム" },
   { key: "all", label: "全体" },
+  { key: "shop", label: "🛒 買う物" },
   { key: "tips", label: "💡 Tips" },
   { key: "lang", label: "🇰🇷 韓国語" },
   { key: "sos", label: "🆘 SOS" },
 ];
 
-const PANELS = ["itin", "tips", "lang", "sos"];
+const PANELS = ["itin", "shop", "tips", "lang", "sos"];
+
+const SHOPPING = [
+  {
+    id: "somebymi-body",
+    name: "Some By Mi ミラクル ボディクレンザー",
+    spot: "オリーブヤング 明洞タウン店",
+    where: "オリーブヤング",
+    note: "液体なので2日目までに購入→スーツケースへ",
+    url: "https://www.cosme.net/variations/1110716/",
+    img: "img/somebymi-body.jpg",
+  },
+  {
+    id: "hetras-diffuser",
+    name: "hetras ディフューザー(液体土産)",
+    spot: "hetras 明洞店",
+    where: "hetras 明洞店・Day1",
+    note: "購入→梱包依頼→スーツケースへ。ハンドクリーム5個以上で各7,000Wのプロモ実績あり",
+  },
+  {
+    id: "fwee-pot",
+    name: "fwee リップ&チーク ブラーリープリンポット",
+    spot: "fwee Agit 聖水",
+    where: "fwee Agit 聖水・Day1",
+    note: "購入でミニリップキーホルダー特典。まとめ買いは明洞オリヤンでも可(即時還付)",
+    img: "img/fwee-pot.jpg",
+  },
+  {
+    id: "tamburins-hand",
+    name: "Tamburins シェル パフュームハンドクリーム",
+    spot: "Tamburins 聖水",
+    where: "Tamburins 聖水・Day1",
+    note: "貝殻型のあれ。お土産の定番",
+    img: "img/tamburins-hand.jpg",
+  },
+  {
+    id: "nori",
+    name: "韓国のり",
+    spot: null,
+    where: "南大門市場・Day3",
+    note: "軽くて機内持ち込みOK。Day3午前の手ぶら観光中に",
+  },
+];
 
 const ITINERARY = [
   {
@@ -1154,8 +1229,49 @@ function renderArea() {
   map.fitBounds(bounds, { padding: [40, 40], maxZoom: 16, animate: false });
 }
 
+const SHOP_KEY = "seoul-shoplist-v1";
+
+function loadShopDone() {
+  try { return new Set(JSON.parse(localStorage.getItem(SHOP_KEY) || "[]")); }
+  catch { return new Set(); }
+}
+
+function renderShopping() {
+  const done = loadShopDone();
+  const root = document.getElementById("shop-list");
+  root.innerHTML = "";
+  for (const it of SHOPPING) {
+    const btn = document.createElement("button");
+    btn.className = "shop-item" + (it.img ? "" : " no-img") + (done.has(it.id) ? " done" : "");
+    const links = [];
+    if (it.url) {
+      links.push(`<a class="maplink gmap" href="${it.url}" target="_blank" rel="noopener" onclick="event.stopPropagation()">商品ページ ↗</a>`);
+    }
+    if (it.spot && spotByName(it.spot)) {
+      links.push(`<a class="maplink nmap" href="#" onclick="event.preventDefault();event.stopPropagation();jumpToSpot('${it.spot.replace(/'/g, "\\'")}')">📍 お店の場所</a>`);
+    }
+    btn.innerHTML = `
+      <span class="shop-check">${done.has(it.id) ? "✓" : ""}</span>
+      ${it.img ? `<img class="shop-thumb" src="${it.img}" alt="${it.name}" loading="lazy">` : ""}
+      <span>
+        <span class="shop-where">${it.where}</span><br>
+        <span class="shop-name">${it.name}</span>
+        ${it.note ? `<p class="shop-memo">${it.note}</p>` : ""}
+        ${links.length ? `<span class="shop-links">${links.join("")}</span>` : ""}
+      </span>`;
+    btn.addEventListener("click", () => {
+      const d = loadShopDone();
+      if (d.has(it.id)) d.delete(it.id); else d.add(it.id);
+      localStorage.setItem(SHOP_KEY, JSON.stringify([...d]));
+      renderShopping();
+    });
+    root.appendChild(btn);
+  }
+}
+
 renderLegend();
 renderItinerary();
+renderShopping();
 renderArea();
 </script>
 </body>
