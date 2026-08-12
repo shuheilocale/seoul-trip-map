@@ -183,6 +183,12 @@ nav {
 .islot .body { border-left: 2px solid var(--line); padding-left: 12px; min-height: 30px; }
 .islot.plain .body { font-size: 13.5px; padding-top: 3px; }
 .islot.muted .body { font-size: 12.5px; color: var(--sub); padding-top: 3px; }
+.islot-img {
+  display: block; width: 100%; max-width: 480px; border-radius: 12px;
+  border: 1px solid var(--line); background: #fff; margin: 4px 0 2px;
+}
+.islot-cap { font-size: 11.5px; color: var(--sub); line-height: 1.6; }
+.islot .body a.inline-link { color: var(--kr-blue); font-weight: 600; }
 .ispot {
   display: grid; grid-template-columns: 28px 1fr; gap: 8px; align-items: start;
   width: 100%; text-align: left; background: none; border: none; padding: 3px 0;
@@ -953,6 +959,7 @@ const ITINERARY = [
       { time: "10:30", text: "仁川空港着 → 入国・荷物受取。eSIM通信オン" },
       { time: "11:15", text: "空港では8,000円分だけ両替→T-money4枚購入(子ども登録忘れずに)+WOWPASSに3.5万円チャージ。まとまった両替は明洞で(→Tipsタブ「お金の配分プラン」)" },
       { time: "11:45", icon: "🚇", text: "AREX一般列車でソウル駅へ(約60分・T-moneyでそのまま乗車)" },
+      { muted: true, text: "のりばはT1地下1階の交通センター。青い「공항철도 Airport Railroad」の表示に沿って下りる。<a class=\"inline-link\" href=\"https://www.arex.or.kr/vr/Arex/incheonT1.html?l=JP\" target=\"_blank\" rel=\"noopener\">仁川T1のVRガイドで下見できる ↗</a>" },
       { time: "12:50", icon: "🚕", text: "ソウル駅 → ホテル(k.ride 5〜10分 or 地下鉄1駅)" },
       { time: "13:15", text: "ホテル着・荷物預け" },
       { time: "13:20", spot: "マネープラネット 明洞店", note: "まとまった両替はここで。黄色看板・明洞駅5番出口142m・CU向かい" },
@@ -1005,6 +1012,8 @@ const ITINERARY = [
       { time: "09:20", text: "ホテル戻り → チェックアウト(9:30発)" },
       { time: "09:30", icon: "🚕", text: "タクシーでソウル駅へ(5〜10分。地下鉄1駅/徒歩15分でも可)" },
       { time: "09:45-10:30", text: "ソウル駅 都心空港ターミナル(地下2階): 搭乗手続き+荷物預け → 出国審査完了。カウンターで「4人並びで」依頼。AREX直通は13:30頃発を座席指定(次発の時刻も控える)" },
+      { image: "img/arex-seoul-b2.jpg", caption: "ソウル駅B2の案内図(AREX公式)。1F→B2エスカレーターを下りたら、🔴赤の動線=都心空港ターミナル(チェックイン・荷物預け・出国審査/チェジュ航空対応)。13:30に乗るときは🟠オレンジの動線=直通列車の改札→B2→B7エスカレーターでのりばへ" },
+      { muted: true, text: "<a class=\"inline-link\" href=\"https://www.arex.or.kr/vr/Arex/seoul.html?l=JP\" target=\"_blank\" rel=\"noopener\">ソウル駅構内のVRガイド(AREX公式)で下見できる ↗</a>" },
       { time: "10:30", text: "搭乗券ゲット・完全手ぶらで観光へ。ソウル駅→南大門 徒歩10分・「ソウル路7017」経由" },
       { time: "10:40-11:30", text: "南大門市場で食べ歩き+お土産(ホットク・王マンドゥ・のり)。朝おかゆ済みなので軽く・昼に響かせない。T-money使い切り。※100ml超の液体は買わない" },
       { time: "11:30", icon: "🚶", text: "明洞へ移動(徒歩10分)" },
@@ -1012,7 +1021,9 @@ const ITINERARY = [
       { time: "12:40-13:00", spot: "オリーブヤング 明洞タウン店", note: "最後の買い物・20分の短縮版。即時還付。機内持ち込み可能な物だけ・買う物は事前に決めておく" },
       { time: "13:05", icon: "🚕", text: "ソウル駅へ戻る(タクシー5〜10分推奨。手ぶらで身軽)" },
       { time: "13:30頃", icon: "🚄", text: "AREX直通で仁川へ(約43分・全席指定・地下7階ホーム)。13:15にはソウル駅着が目標" },
+      { muted: true, text: "改札は朝の案内図の🟠オレンジの改札口(都心空港ターミナルの向かい側)。改札を通ってB2→B7エスカレーターでのりばへ" },
       { time: "14:15", text: "仁川着 → 3階出国ゲート「専用口」へ。一般の列に並ばず専用レーンで手荷物検査のみ(5〜10分)" },
+      { muted: true, text: "専用口は「도심공항터미널 전용출구(都心空港ターミナル専用口)」の表示が目印。見つからなければ職員に搭乗券を見せれば案内してくれる" },
       { time: "14:30-16:45", text: "制限エリア内でゆったり: 免税品受取→免税店・カフェ・お手洗い→搭乗ゲートへ。密封袋は開けない(直行便なので福岡までOK)" },
       { time: "16:45頃", text: "搭乗開始めやす・ゲート集合(遠いゲートなら移動20分見込む)" },
       { time: "17:20", icon: "✈️", text: "仁川発" },
@@ -1075,6 +1086,11 @@ function renderItinerary() {
              </button>`
           : `<div class="ispot"><span>${it.spot}</span></div>`;
         html += `<div class="islot"><span class="when">${when}</span><div class="body">${inner}</div></div>`;
+      } else if (it.image) {
+        html += `<div class="islot plain"><span class="when">${when}</span><div class="body">
+          <a href="${it.image}" target="_blank" rel="noopener"><img class="islot-img" src="${it.image}" alt="${it.caption || "案内図"}" loading="lazy"></a>
+          ${it.caption ? `<p class="islot-cap">${it.caption}(タップで拡大)</p>` : ""}
+        </div></div>`;
       } else {
         const cls = it.muted ? "islot muted" : "islot plain";
         html += `<div class="${cls}"><span class="when">${when}</span><div class="body">${it.icon ? it.icon + " " : ""}${it.text}</div></div>`;
