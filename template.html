@@ -240,6 +240,32 @@ nav {
 .shop-memo { font-size: 12px; color: var(--sub); margin-top: 2px; }
 .shop-links { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 7px; }
 
+/* ---------- ライトボックス ---------- */
+.shop-thumb { cursor: zoom-in; }
+.lightbox {
+  position: fixed; inset: 0; z-index: 3000; background: rgba(20,20,24,.96);
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  padding: 16px; gap: 12px;
+  -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
+}
+.lightbox[hidden] { display: none; }
+.lightbox img {
+  max-width: 100%; max-height: 72vh; object-fit: contain;
+  border-radius: 12px; background: #fff;
+}
+.lightbox .lb-title {
+  color: #fff; font-family: var(--disp); font-weight: 700; font-size: 15px; text-align: center;
+  max-width: 560px;
+}
+.lightbox .lb-where { color: #ddd; font-size: 12px; text-align: center; }
+.lightbox .lb-close {
+  position: absolute; top: 12px; right: 12px; width: 40px; height: 40px; border-radius: 50%;
+  border: none; background: rgba(255,255,255,.18); color: #fff; font-size: 22px; cursor: pointer;
+}
+.lightbox .lb-hint { color: #aaa; font-size: 11px; }
+.lightbox .lb-close:focus-visible { outline: 3px solid #fff; }
+body.lb-open { overflow: hidden; }
+
 /* ---------- SOS ---------- */
 .sos-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
 .sos-num {
@@ -484,6 +510,14 @@ nav {
   </div>
 </section>
 
+<div class="lightbox" id="lightbox" hidden role="dialog" aria-modal="true" aria-label="商品写真">
+  <button class="lb-close" id="lb-close" aria-label="閉じる">×</button>
+  <img id="lb-img" alt="">
+  <div class="lb-title" id="lb-title"></div>
+  <div class="lb-where" id="lb-where"></div>
+  <div class="lb-hint">画面をタップで閉じる</div>
+</div>
+
 <section class="itin" id="sos" hidden>
   <div class="day">
     <p class="group-title">📞 緊急電話(タップで発信)</p>
@@ -577,9 +611,10 @@ const SHOPPING = [
     name: "Some By Mi ミラクル ボディクレンザー",
     spot: "オリーブヤング 明洞タウン店",
     where: "オリーブヤング",
-    note: "液体なので2日目までに購入→スーツケースへ",
+    note: "韓国名「AHA BHA PHA アクネ ボディクレンザー 400g」・緑のポンプボトル。セール17,000W。⚠️オリヤン公式サイトで一時品切れ表示(8月中旬)→店頭になければ同ブランドのボディミスト140mLでも可。液体なので2日目までに購入→スーツケースへ",
     url: "https://www.cosme.net/variations/1110716/",
     img: "img/somebymi-body.jpg",
+    imgFull: "img_full/somebymi-body.jpg",
   },
   {
     id: "hetras-diffuser",
@@ -595,6 +630,7 @@ const SHOPPING = [
     where: "オリーブヤング",
     note: "ボディ用ピーリングパッド(使い切りグローブ・角質/美白ケア)。1,000万枚販売の人気商品。1枚23gなので機内持ち込みOK",
     img: "img/laundryou-glove.jpg",
+    imgFull: "img_full/laundryou-glove.jpg",
   },
   {
     id: "vt-reedleshot",
@@ -603,6 +639,7 @@ const SHOPPING = [
     where: "ダイソー(⚠️オリヤンではない)",
     note: "背中ニキビケアで話題・₩5,000のダイソー専売品(品番1072854)。液体350mL→2日目までに購入してスーツケースへ",
     img: "img/vt-reedleshot.jpg",
+    imgFull: "img_full/vt-reedleshot.jpg",
   },
   {
     id: "vt-bodymist",
@@ -611,6 +648,7 @@ const SHOPPING = [
     where: "ダイソー(⚠️オリヤンではない)",
     note: "ボディウォッシュの後に背中・首へシュッ(あとに塗るやつ・体用)。₩5,000・品番1072855。同ラインのローション(200mL・₩5,000)も余裕があれば。液体→2日目までに",
     img: "img/vt-bodymist.jpg",
+    imgFull: "img_full/vt-bodymist.jpg",
   },
   {
     id: "vt-rs100",
@@ -619,6 +657,7 @@ const SHOPPING = [
     where: "オリーブヤング",
     note: "顔用リードルショットの入門(刺激弱め)。アワード企画=定価32,000→15,870W(+300スティック5個+PDRNエッセンス付き)が超お得。50mLなので機内OK",
     img: "img/vt-rs100.jpg",
+    imgFull: "img_full/vt-rs100.jpg",
   },
   {
     id: "vt-rs300",
@@ -627,6 +666,7 @@ const SHOPPING = [
     where: "オリーブヤング",
     note: "中間の強さ。定価43,000→セール29,000W。30mL企画(24,900W・パウチ3個付き)もあり。機内OK",
     img: "img/vt-rs300.jpg",
+    imgFull: "img_full/vt-rs300.jpg",
   },
   {
     id: "vt-rs700",
@@ -635,6 +675,7 @@ const SHOPPING = [
     where: "オリーブヤング",
     note: "強め(慣れてから)。58,000W・セール対象外のことが多い。機内OK。※さらに上の1000(15mL・63,000W)もある",
     img: "img/vt-rs700.jpg",
+    imgFull: "img_full/vt-rs700.jpg",
   },
   {
     id: "torriden-serum",
@@ -643,6 +684,7 @@ const SHOPPING = [
     where: "オリーブヤング",
     note: "顔用リードルショットの「あとに塗るやつ」(水分補給)→上からジェルでフタ。オリヤン水分セラム1位。企画16,500W(+パッド10枚)。機内OK",
     img: "img/torriden-serum.jpg",
+    imgFull: "img_full/torriden-serum.jpg",
   },
   {
     id: "anua-pad",
@@ -651,6 +693,7 @@ const SHOPPING = [
     where: "オリーブヤング",
     note: "首のポツポツに貼って鎮静。⚠️液体トナー(250mL)ではなくパッドを選ぶ。単品19,200W〜/リフィル企画29,500W〜。液体扱いなのでDay1に買ってスーツケースへ",
     img: "img/anua-pad.jpg",
+    imgFull: "img_full/anua-pad.jpg",
   },
   {
     id: "mamonde-azulene",
@@ -659,6 +702,7 @@ const SHOPPING = [
     where: "オリーブヤング(優先度低・余裕があれば)",
     note: "話題の鎮静成分アズレン(カモミール由来)のクリーム。リードルショット→Torridenの後の「フタ」をこれにすると鎮静+保湿が1本で済む。定価29,000→24,700W。青いパッケージ・成分表にAzulene/Guaiazuleneがあるか確認。60mLなので機内OK",
     img: "img/mamonde-azulene.jpg",
+    imgFull: "img_full/mamonde-azulene.jpg",
   },
   {
     id: "fation-serum",
@@ -667,6 +711,7 @@ const SHOPPING = [
     where: "オリーブヤング",
     note: "オリヤン「トラブルセラム1位」のニキビ鎮静セラム。定価38,000W→セールで27,900W(+15mL+マスク付き企画)。トナー・クリームも同ライン。50mLなので機内持ち込みOK",
     img: "img/fation-serum.jpg",
+    imgFull: "img_full/fation-serum.jpg",
   },
   {
     id: "bringgreen-lip",
@@ -675,6 +720,7 @@ const SHOPPING = [
     where: "オリーブヤング",
     note: "オリヤン専属ブランドの保湿リップ美容液。2本/4本パックあり・8月のオリヤンピックでセール中(6,800W〜)。小さいので機内OK・バラマキにも",
     img: "img/bringgreen-lip.jpg",
+    imgFull: "img_full/bringgreen-lip.jpg",
   },
 ];
 
@@ -989,6 +1035,26 @@ function renderArea() {
 
 const SHOP_KEY = "seoul-shoplist-v1";
 
+function openLightbox(id) {
+  const it = SHOPPING.find(x => x.id === id);
+  if (!it || !it.img) return;
+  const lb = document.getElementById("lightbox");
+  document.getElementById("lb-img").src = it.imgFull || it.img;
+  document.getElementById("lb-img").alt = it.name;
+  document.getElementById("lb-title").textContent = it.name;
+  document.getElementById("lb-where").textContent = it.where || "";
+  lb.hidden = false;
+  document.body.classList.add("lb-open");
+  document.getElementById("lb-close").focus();
+}
+function closeLightbox() {
+  document.getElementById("lightbox").hidden = true;
+  document.body.classList.remove("lb-open");
+}
+document.getElementById("lightbox").addEventListener("click", closeLightbox);
+document.getElementById("lb-close").addEventListener("click", e => { e.stopPropagation(); closeLightbox(); });
+document.addEventListener("keydown", e => { if (e.key === "Escape") closeLightbox(); });
+
 function loadShopDone() {
   try { return new Set(JSON.parse(localStorage.getItem(SHOP_KEY) || "[]")); }
   catch { return new Set(); }
@@ -1010,14 +1076,18 @@ function renderShopping() {
     }
     btn.innerHTML = `
       <span class="shop-check">${done.has(it.id) ? "✓" : ""}</span>
-      ${it.img ? `<img class="shop-thumb" src="${it.img}" alt="${it.name}" loading="lazy">` : ""}
+      ${it.img ? `<img class="shop-thumb" src="${it.img}" alt="${it.name}" loading="lazy" data-lb="${it.id}">` : ""}
       <span>
         <span class="shop-where">${it.where}</span><br>
         <span class="shop-name">${it.name}</span>
         ${it.note ? `<p class="shop-memo">${it.note}</p>` : ""}
         ${links.length ? `<span class="shop-links">${links.join("")}</span>` : ""}
       </span>`;
-    btn.addEventListener("click", () => {
+    btn.addEventListener("click", (e) => {
+      if (e.target.classList.contains("shop-thumb")) {
+        openLightbox(e.target.dataset.lb);
+        return;
+      }
       const d = loadShopDone();
       if (d.has(it.id)) d.delete(it.id); else d.add(it.id);
       localStorage.setItem(SHOP_KEY, JSON.stringify([...d]));
